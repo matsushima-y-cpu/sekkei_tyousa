@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,13 +21,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
 
 interface Project {
   id: string;
   projectNumber: string | null;
   propertyName: string;
   municipality: string | null;
+  lotNumber: string | null;
   customerName: string | null;
   status: string;
   createdAt: string;
@@ -54,6 +56,7 @@ const STATUS_VARIANTS: Record<string, "default" | "secondary" | "outline" | "des
 };
 
 export function ProjectList() {
+  const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -129,27 +132,33 @@ export function ProjectList() {
             <TableRow>
               <TableHead>物件名称</TableHead>
               <TableHead>市区町村</TableHead>
+              <TableHead>地番</TableHead>
               <TableHead>顧客名</TableHead>
               <TableHead>ステータス</TableHead>
               <TableHead>作成日</TableHead>
+              <TableHead className="text-right">出力</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8">
+                <TableCell colSpan={7} className="text-center py-8">
                   読み込み中...
                 </TableCell>
               </TableRow>
             ) : projects.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                   プロジェクトがありません
                 </TableCell>
               </TableRow>
             ) : (
               projects.map((project) => (
-                <TableRow key={project.id}>
+                <TableRow
+                  key={project.id}
+                  className="cursor-pointer"
+                  onClick={() => router.push(`/projects/${project.id}/edit`)}
+                >
                   <TableCell>
                     <Link
                       href={`/projects/${project.id}`}
@@ -159,6 +168,7 @@ export function ProjectList() {
                     </Link>
                   </TableCell>
                   <TableCell>{project.municipality || "-"}</TableCell>
+                  <TableCell>{project.lotNumber || "-"}</TableCell>
                   <TableCell>{project.customerName || "-"}</TableCell>
                   <TableCell>
                     <Badge variant={STATUS_VARIANTS[project.status] || "outline"}>
@@ -167,6 +177,22 @@ export function ProjectList() {
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {new Date(project.createdAt).toLocaleDateString("ja-JP")}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-1">
+                      <a href={`/api/projects/${project.id}/export?type=survey`}>
+                        <Button variant="ghost" size="sm" title="調査書Excel出力">
+                          <FileDown className="h-4 w-4 mr-1" />
+                          調査書
+                        </Button>
+                      </a>
+                      <a href={`/api/projects/${project.id}/export?type=estimate`}>
+                        <Button variant="ghost" size="sm" title="見積書Excel出力">
+                          <FileDown className="h-4 w-4 mr-1" />
+                          見積書
+                        </Button>
+                      </a>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

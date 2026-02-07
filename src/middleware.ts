@@ -1,13 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
+import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
-  const sessionCookie = getSessionCookie(request);
-
-  if (!sessionCookie) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
-
+// TODO: better-auth認証を後で有効化する
+export function middleware() {
   return NextResponse.next();
 }
 

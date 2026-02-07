@@ -16,7 +16,7 @@ export default function ProjectsPage() {
         <Link href="/projects/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            新規作成
+            新規調査書作成
           </Button>
         </Link>
       </div>

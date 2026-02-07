@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { ProjectForm } from "@/components/project-form";
+import { ProjectSurveyForm } from "@/components/project-survey-form";
 
 export default async function ProjectEditPage({
   params,
@@ -22,10 +22,9 @@ export default async function ProjectEditPage({
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <h2 className="text-2xl font-bold">プロジェクト編集</h2>
-      <ProjectForm
-        initialData={{
+    <div className="max-w-4xl mx-auto space-y-6">
+      <ProjectSurveyForm
+        initialProject={{
           id: project.id,
           propertyName: project.propertyName,
           prefectureId: project.prefectureId,

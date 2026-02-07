@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -91,6 +91,11 @@ export function Header() {
               </nav>
             </SheetContent>
           </Sheet>
+          <Link href="/">
+            <Button variant="ghost" size="icon" title="トップ画面">
+              <Home className="h-5 w-5" />
+            </Button>
+          </Link>
           <h1 className="text-lg font-semibold">{title}</h1>
         </div>
 
