@@ -1,3 +1,11 @@
+export const dynamic = "force-dynamic";
+
+import { db } from "@/db";
+import { projects } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { notFound } from "next/navigation";
+import { ItemSelector } from "@/components/item-selector";
+
 export default async function ProjectItemsPage({
   params,
 }: {
@@ -5,10 +13,19 @@ export default async function ProjectItemsPage({
 }) {
   const { id } = await params;
 
+  const project = await db.query.projects.findFirst({
+    where: eq(projects.id, id),
+  });
+
+  if (!project) {
+    notFound();
+  }
+
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">調査項目選択</h2>
-      <p className="text-muted-foreground">プロジェクト {id} の調査項目を選択します。</p>
-    </div>
+    <ItemSelector
+      projectId={id}
+      prefectureId={project.prefectureId}
+      municipality={project.municipality}
+    />
   );
 }

@@ -1,6 +1,9 @@
 import { pgTable, serial, text, varchar, integer, decimal, boolean, timestamp, uuid, pgEnum, date } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
+// Auth tables
+export { user, session, account, verification } from "./auth-schema";
+
 // Enums
 export const userRoleEnum = pgEnum("user_role", ["admin", "user"]);
 export const projectStatusEnum = pgEnum("project_status", ["draft", "investigating", "estimated", "completed"]);

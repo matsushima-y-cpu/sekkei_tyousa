@@ -1,22 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
-
-const statusLabels: Record<string, string> = {
-  draft: "下書き",
-  investigating: "調査中",
-  estimated: "見積済",
-  completed: "完了",
-};
-
-const statusVariants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  draft: "outline",
-  investigating: "default",
-  estimated: "secondary",
-  completed: "default",
-};
+import { ProjectList } from "@/components/project-list";
 
 export default function ProjectsPage() {
   return (
@@ -33,16 +20,7 @@ export default function ProjectsPage() {
           </Button>
         </Link>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>プロジェクト</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            プロジェクトが登録されていません。「新規作成」から案件を追加してください。
-          </p>
-        </CardContent>
-      </Card>
+      <ProjectList />
     </div>
   );
 }
